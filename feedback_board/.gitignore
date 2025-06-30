@@ -1,7 +1,8 @@
 # Global ignores
 .DS_Store
-.env* # Ignores all .env files (e.g., .env, .env.local, etc.)
+# .env* # Ignores all .env files (e.g., .env, .env.local, etc.)
 
+.env*
 # Node.js ignores (will apply to both frontend and backend)
 node_modules/
 npm-debug.log*

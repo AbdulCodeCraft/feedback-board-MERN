@@ -4,6 +4,7 @@ const express = require('express');
 const cors = require('cors');
 const connectDB = require('./config/db'); // Import the DB connection function
 const feedbackRoutes = require('./routes/feedbackRoutes'); // Import the feedback routes
+const commentRoutes = require('./routes/commentRoutes'); // NEW: Import comment routes
 
 // Connect to Database
 connectDB(); // Call the function to connect to MongoDB
@@ -23,6 +24,11 @@ app.get('/', (req, res) => {
 // --- API Routes ---
 // Mount the feedback routes at the /feedbacks path
 app.use('/feedbacks', feedbackRoutes); // All routes defined in feedbackRoutes.js will be prefixed with /feedbacks
+
+
+// This structure means /feedbacks/:feedbackId/comments
+app.use('/feedbacks', commentRoutes); // The router itself handles the :feedbackId segment
+                                   // as it's defined within commentRoutes.js
 
 // The app.listen is now inside connectDB in db.js,
 // so no need to start server here if you prefer starting only after DB success.

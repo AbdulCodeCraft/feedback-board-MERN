@@ -26,10 +26,24 @@ router.post('/', async (req, res) => {
     }
 });
 
-// 2. GET /feedbacks - Get all feedbacks
-router.get('/', async (req, res) => {
+// Modified: 2. GET /feedbacks - Get all feedbacks (with optional search filter)
+  router.get('/', async (req, res) => {
     try {
-        const feedbacks = await Feedback.find().sort({ createdAt: -1 });
+        const { q } = req.query; // Get the search query from URL (e.g., /feedbacks?q=searchterm)
+        let query = {}; // Initialize an empty query object
+
+        if (q) {
+            // If a search query exists, build a search condition
+            // Uses regex for case-insensitive partial matching on title and description
+            query = {
+                $or: [
+                    { title: { $regex: q, $options: 'i' } },
+                    { description: { $regex: q, $options: 'i' } }
+                ]
+            };
+        }
+
+        const feedbacks = await Feedback.find(query).sort({ createdAt: -1 }); // Apply the query
         res.status(200).json(feedbacks);
     } catch (error) {
         console.error('Error fetching feedbacks:', error);
