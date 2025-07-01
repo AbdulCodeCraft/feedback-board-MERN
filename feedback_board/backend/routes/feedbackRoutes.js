@@ -26,24 +26,60 @@ router.post('/', async (req, res) => {
     }
 });
 
-// Modified: 2. GET /feedbacks - Get all feedbacks (with optional search filter)
-  router.get('/', async (req, res) => {
+// CORRECTED: GET /feedbacks - Get all feedbacks (with optional search, filter, and sort)
+router.get('/', async (req, res) => {
     try {
-        const { q } = req.query; // Get the search query from URL (e.g., /feedbacks?q=searchterm)
-        let query = {}; // Initialize an empty query object
+        // Destructure all possible query parameters
+        const { q, status, category, sortBy, sortOrder } = req.query;
+        let query = {}; // This object will hold all our filter conditions for Mongoose
+        let sort = { createdAt: -1 }; // Default sort: newest first
 
+        // 1. Search (existing logic)
         if (q) {
-            // If a search query exists, build a search condition
-            // Uses regex for case-insensitive partial matching on title and description
-            query = {
-                $or: [
-                    { title: { $regex: q, $options: 'i' } },
-                    { description: { $regex: q, $options: 'i' } }
-                ]
-            };
+            query.$or = [
+                { title: { $regex: q, $options: 'i' } },
+                { description: { $regex: q, $options: 'i' } }
+            ];
         }
 
-        const feedbacks = await Feedback.find(query).sort({ createdAt: -1 }); // Apply the query
+        // 2. Filter by Status
+        if (status) {
+            const allowedStatuses = ['Open', 'Planned', 'In Progress', 'Done'];
+            if (!allowedStatuses.includes(status)) {
+                return res.status(400).json({ message: 'Invalid status filter provided.' });
+            }
+            query.status = status; // Add status filter to the query object
+        }
+
+        // 3. Filter by Category
+        if (category) {
+            const allowedCategories = ['Feature', 'Bug', 'UI', 'Other'];
+            if (!allowedCategories.includes(category)) {
+                return res.status(400).json({ message: 'Invalid category filter provided.' });
+            }
+            query.category = category; // Add category filter to the query object
+        }
+
+        // 4. Sorting
+        if (sortBy) {
+            const validSortFields = ['upvotes', 'createdAt'];
+            if (!validSortFields.includes(sortBy)) {
+                return res.status(400).json({ message: 'Invalid sortBy field provided.' });
+            }
+            // Determine sort order: 1 for ascending, -1 for descending
+            const order = (sortOrder === 'asc' || sortOrder === '1') ? 1 : -1;
+            sort = { [sortBy]: order }; // Dynamically set the sort field and order
+        } else {
+            // If sortBy is not provided but sortOrder is, apply it to default createdAt
+            if (sortOrder) {
+                const order = (sortOrder === 'asc' || sortOrder === '1') ? 1 : -1;
+                sort = { createdAt: order };
+            }
+        }
+
+        // Execute the Mongoose find operation with the constructed query and sort objects
+        const feedbacks = await Feedback.find(query)
+                                      .sort(sort);
         res.status(200).json(feedbacks);
     } catch (error) {
         console.error('Error fetching feedbacks:', error);
