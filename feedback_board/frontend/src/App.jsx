@@ -11,7 +11,7 @@ function App() {
   return (
     <div className="min-h-screen bg-gray-100 font-sans">
       {/* Basic Navigation (Header) */}
-      <nav className="bg-white shadow-md p-4">
+      <nav className="bg-blue-300 shadow-md p-4">
         <ul className="flex justify-center space-x-4">
           {isAuthenticated && ( // Only show Home link if authenticated
             <li><Link to="/" className="text-blue-600 hover:text-blue-800 font-semibold">Home</Link></li>
@@ -20,7 +20,7 @@ function App() {
             <li><Link to="/submit" className="text-blue-600 hover:text-blue-800 font-semibold">Submit Feedback</Link></li>
           )}
           {!isAuthenticated ? ( // Show Login if not authenticated
-            <li><Link to="/login" className="text-blue-600 hover:text-blue-800 font-semibold">Login</Link></li>
+            <li><Link to="/login" className="!text-black hover:text-blue-800 font-semibold">LOGIN</Link></li>
           ) : ( // Show Logout if authenticated
             <li>
               <button
@@ -34,7 +34,7 @@ function App() {
         </ul>
       </nav>
 
-      <main className="w-full px-4 sm:px-6 lg:px-8">
+      <main >
         <Routes>
           {/* Route for the Login Page - accessible by anyone */}
           <Route path="/login" element={<LoginPage />} />
