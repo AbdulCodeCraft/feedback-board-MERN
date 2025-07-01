@@ -68,7 +68,7 @@ const HomePage = () => {
 
   if (loading) {
     return (
-      <div className="min-h-[50vh] flex items-center justify-center text-xl text-gray-700">
+      <div className="w-screen h-screenx flex items-center justify-center text-xl text-gray-700">
         Loading feedbacks...
       </div>
     );
@@ -79,16 +79,16 @@ const HomePage = () => {
   }
 
   return (
-    <div className="max-w-screen-xl mx-auto py-4"> {/* Using max-w-screen-xl for wider content */}
+    <div className="w-screen h-screen mx-auto p-8"> {/* Using max-w-screen-xl for wider content */}
       <h1 className="text-4xl font-bold text-gray-800 mb-8 text-center">Product Feedback Board</h1>
 
       <div className="flex flex-col sm:flex-row justify-between items-center mb-6 space-y-4 sm:space-y-0 sm:space-x-4">
         {/* Search Bar */}
-        <div className="relative w-full sm:w-1/3">
+        <div className="relative w-full sm:w-1/3 text-black">
             <input
                 type="text"
                 placeholder="Search feedbacks..."
-                className="w-full p-2 pl-10 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full p-2 pl-10 border border-black rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
             />
@@ -132,7 +132,7 @@ const HomePage = () => {
             {/* Sort Order */}
             {sortBy !== 'createdAt' && ( // Only show sort order if not default 'newest'
                 <select
-                    className="p-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="p-2 border text-black border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                     value={sortOrder}
                     onChange={(e) => setSortOrder(e.target.value)}
                 >
@@ -143,7 +143,7 @@ const HomePage = () => {
         </div>
 
         {/* Submit New Feedback Button */}
-        <Link to="/submit" className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg shadow-md transition duration-300 ml-0 sm:ml-4 mt-4 sm:mt-0 w-full sm:w-auto text-center">
+        <Link to="/submit" className="bg-gray-800 hover:bg-gray-600 text-white font-medium py-2 px-4 rounded-lg shadow-md transition duration-300 ml-0 sm:ml-4 mt-4 sm:mt-0 w-full sm:w-auto text-center">
           Submit New Feedback
         </Link>
       </div>
@@ -188,7 +188,7 @@ const HomePage = () => {
                   {feedback.upvotes} Upvotes
                 </div>
                 <button
-                  className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-1 px-3 rounded-full text-sm transition duration-300 shadow-sm"
+                  className="bg-gray-900 hover:bg-gray-600 text-white font-semibold py-1 px-3 rounded-full text-sm transition duration-300 shadow-sm"
                   onClick={() => handleUpvote(feedback._id)}
                 >
                   Upvote

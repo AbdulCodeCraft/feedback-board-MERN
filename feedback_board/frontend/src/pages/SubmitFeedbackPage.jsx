@@ -56,7 +56,7 @@ const SubmitFeedbackPage = () => {
 
   return (
     // Outer container for the entire page, takes full screen height, uses flex for layout
-    <div className="h-screen w-screen bg-gradient-to-br from-blue-100 to-purple-100 flex items-center justify-center p-2 sm:p-6 lg:p-8">
+    <div className=" bg-gradient-to-br from-blue-100 to-purple-100 flex items-center justify-center pt-8">
       <div className="flex flex-col lg:flex-row bg-white rounded-xl shadow-2xl overflow-hidden max-w-4xl w-full">
 
         {/* Left Section: Image / Illustration */}
@@ -140,7 +140,7 @@ const SubmitFeedbackPage = () => {
             <div className="flex items-center justify-between">
               <button
                 type="submit"
-                className={`bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg shadow-md transition duration-300 ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
+                className={`bg-gray-900 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-lg shadow-md transition duration-300 ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
                 disabled={loading}
               >
                 {loading ? 'Submitting...' : 'Submit Feedback'}
@@ -148,7 +148,7 @@ const SubmitFeedbackPage = () => {
               <button
                 type="button"
                 onClick={() => navigate('/')}
-                className="bg-gray-300 hover:bg-gray-400 text-white font-bold py-2 px-4 rounded-lg shadow-md transition duration-300"
+                className="bg-red-600 hover:bg-red-900 text-white font-bold py-2 px-4 rounded-lg shadow-md transition duration-300"
                 disabled={loading}
               >
                 Cancel

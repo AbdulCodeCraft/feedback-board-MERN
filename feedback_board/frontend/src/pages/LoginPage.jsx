@@ -63,7 +63,7 @@ const LoginPage = () => {
             <form onSubmit={handleSubmit} className="space-y-5 sm:space-y-6"> {/* Adjusted spacing */}
               <div>
                 {/* Changed text-black to text-white for labels */}
-                <label htmlFor="username" className="block text-white text-sm font-semibold mb-2 drop-shadow-sm">
+                <label htmlFor="username" className="block text-black text-sm font-semibold mb-2 drop-shadow-sm">
                   Username:
                 </label>
                 <input

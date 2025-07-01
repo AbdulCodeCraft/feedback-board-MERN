@@ -119,7 +119,7 @@ const FeedbackDetailPage = () => {
 
   // --- Main Render for Feedback Details and Comments ---
   return (
-    <div className="max-w-3xl mx-auto bg-white p-8 rounded-lg shadow-lg">
+    <div className="w-screen h-screen bg-white p-8 rounded-lg shadow-lg">
       <Link to="/" className="text-blue-500 hover:underline mb-4 inline-block">&larr; Back to all feedbacks</Link>
 
       <h1 className="text-4xl font-bold text-gray-800 mb-4">{feedback.title}</h1>
@@ -132,7 +132,7 @@ const FeedbackDetailPage = () => {
             feedback.category === 'UI' ? 'bg-blue-100 text-blue-800' :
             'bg-gray-100 text-gray-800'
         }`}>
-          {feedback.category}
+          {feedback.category}``
         </span>
 
         {/* Status Display / Admin Status Changer */}
