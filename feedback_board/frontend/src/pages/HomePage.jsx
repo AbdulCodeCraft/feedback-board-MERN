@@ -71,8 +71,8 @@ const HomePage = () => {
   }
 
   return (
-    <div className="h-screen w-screen p-10">
-      <h1 className="text-4xl font-bold text-gray-800 mb-8 text-center">Product Feedback Board</h1>
+    <div className="h-full w-screen p-8 text-white">
+      <h1 className="text-4xl font-bold mb-8 text-center text-[#FFE3A9]">Product Feedback Board</h1>
 
       <div className="flex flex-col sm:flex-row justify-between items-center mb-6 space-y-4 sm:space-y-0 sm:space-x-4">
         {/* Search Bar */}
@@ -89,7 +89,7 @@ const HomePage = () => {
             </svg>
         </div>
         {/* Link to Submit Feedback Page */}
-        <Link to="/submit" className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg shadow-md transition duration-300">
+        <Link to="/submit" className="bg-[#d0c3a9] hover:bg-[#ffdca7] !text-[#0B1D51] font-bold py-2 px-4 rounded-lg shadow-md transition duration-300">
           Submit New Feedback
         </Link>
       </div>
@@ -102,7 +102,7 @@ const HomePage = () => {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {feedbacks.map((feedback) => (
-            <div key={feedback._id} className="bg-white rounded-lg shadow-lg p-6 flex flex-col justify-between">
+            <div key={feedback._id} className="bg-[#8CCDEB] rounded-lg shadow-lg p-6 flex flex-col justify-between">
               <div>
                 <h2 className="text-2xl font-semibold text-gray-900 mb-2">{feedback.title}</h2>
                 <p className="text-gray-700 text-sm mb-3 line-clamp-2">{feedback.description}</p>

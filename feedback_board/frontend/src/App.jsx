@@ -7,17 +7,17 @@ import FeedbackDetailPage from './pages/FeedbackDetailPage'; // Correct: default
 
 function App() {
   return (
-    <div className="min-h-screen bg-gray-100 font-sans">
+    <div className="min-h-screen bg-[#0B1D51] font-sans">
       {/* Basic Navigation (Header) */}
-      <nav className="bg-white shadow-md p-4">
+      <nav className="bg-[#8CCDEB] shadow-md p-4">
         <ul className="flex justify-center space-x-4">
-          <li><Link to="/" className="text-blue-600 hover:text-blue-800 font-semibold">Home</Link></li>
-          <li><Link to="/submit" className="text-blue-600 hover:text-blue-800 font-semibold">Submit Feedback</Link></li>
+          <li><Link to="/" className="!text-purple-950 hover:!text-[#596fcd] font-semibold">Home</Link></li>
+          <li><Link to="/submit" className="!text-purple-950 hover:!text-[#596fcd] font-semibold">Submit Feedback</Link></li>
           {/* Add login/logout links here later when implementing auth */}
         </ul>
-      </nav>
+      </nav>``
 
-      <main className="min-h-screen bg-gray-100 font-sans">
+      <main className="font-sans">
         {/* Define your routes */}
         <Routes>
           {/* Route for the Homepage */}
