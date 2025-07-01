@@ -1,35 +1,61 @@
-import { Routes, Route, Link } from 'react-router-dom';
-
-// Import your page components (ensure these paths and import syntaxes are correct)
-import HomePage from './pages/HomePage'; // Correct: default import, path relative to src/
-import SubmitFeedbackPage from './pages/SubmitFeedbackPage'; // Correct: default import, path relative to src/
-import FeedbackDetailPage from './pages/FeedbackDetailPage'; // Correct: default import, path relative to src/
+import { Routes, Route, Link, Navigate } from 'react-router-dom'; // NEW: Import Navigate
+import HomePage from './pages/HomePage';
+import SubmitFeedbackPage from './pages/SubmitFeedbackPage';
+import FeedbackDetailPage from './pages/FeedbackDetailPage';
+import LoginPage from './pages/LoginPage';
+import { useAuth } from './context/AuthContext';
 
 function App() {
+  const { isAuthenticated, userRole, logout } = useAuth();
+
   return (
-    <div className="min-h-screen bg-[#0B1D51] font-sans">
+    <div className="min-h-screen bg-gray-100 font-sans">
       {/* Basic Navigation (Header) */}
-      <nav className="bg-[#8CCDEB] shadow-md p-4">
+      <nav className="bg-white shadow-md p-4">
         <ul className="flex justify-center space-x-4">
-          <li><Link to="/" className="!text-purple-950 hover:!text-[#596fcd] font-semibold">Home</Link></li>
-          <li><Link to="/submit" className="!text-purple-950 hover:!text-[#596fcd] font-semibold">Submit Feedback</Link></li>
-          {/* Add login/logout links here later when implementing auth */}
+          {isAuthenticated && ( // Only show Home link if authenticated
+            <li><Link to="/" className="text-blue-600 hover:text-blue-800 font-semibold">Home</Link></li>
+          )}
+          {isAuthenticated && ( // Only show Submit Feedback link if authenticated
+            <li><Link to="/submit" className="text-blue-600 hover:text-blue-800 font-semibold">Submit Feedback</Link></li>
+          )}
+          {!isAuthenticated ? ( // Show Login if not authenticated
+            <li><Link to="/login" className="text-blue-600 hover:text-blue-800 font-semibold">Login</Link></li>
+          ) : ( // Show Logout if authenticated
+            <li>
+              <button
+                onClick={logout}
+                className="text-blue-600 hover:text-blue-800 font-semibold bg-transparent border-none cursor-pointer p-0"
+              >
+                Logout ({userRole})
+              </button>
+            </li>
+          )}
         </ul>
-      </nav>``
+      </nav>
 
-      <main className="font-sans">
-        {/* Define your routes */}
+      <main className="w-full px-4 sm:px-6 lg:px-8">
         <Routes>
-          {/* Route for the Homepage */}
-          <Route path="/" element={<HomePage />} />
+          {/* Route for the Login Page - accessible by anyone */}
+          <Route path="/login" element={<LoginPage />} />
 
-          {/* Route for the Submit Feedback Page */}
-          <Route path="/submit" element={<SubmitFeedbackPage />} />
+          {/* Protected Routes: All other routes require authentication */}
+          {/* This means if not authenticated, accessing / will redirect to /login */}
+          <Route
+            path="/"
+            element={isAuthenticated ? <HomePage /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="/submit"
+            element={isAuthenticated ? <SubmitFeedbackPage /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="/feedbacks/:id"
+            element={isAuthenticated ? <FeedbackDetailPage /> : <Navigate to="/login" />}
+          />
 
-          {/* Route for the Feedback Detail Page, with a dynamic ID parameter */}
-          <Route path="/feedbacks/:id" element={<FeedbackDetailPage />} />
-
-          {/* You can add more routes here as your app grows */}
+          {/* Fallback for any unmatched paths (optional) */}
+          {/* <Route path="*" element={<Navigate to="/" />} /> */}
         </Routes>
       </main>
     </div>

@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useParams, Link } from 'react-router-dom'; // Import useParams and Link
+import { useParams, Link } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext'; // NEW: Import useAuth hook
 
-// Access the environment variable for API_BASE_URL
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
 
 const FeedbackDetailPage = () => {
-  const { id } = useParams(); // Get the feedback ID from the URL (e.g., from /feedbacks/:id)
+  const { id } = useParams();
   const [feedback, setFeedback] = useState(null);
   const [comments, setComments] = useState([]);
   const [newCommentContent, setNewCommentContent] = useState('');
@@ -14,8 +14,14 @@ const FeedbackDetailPage = () => {
   const [error, setError] = useState(null);
   const [commentError, setCommentError] = useState(null);
   const [commentLoading, setCommentLoading] = useState(false);
+  const [statusUpdating, setStatusUpdating] = useState(false); // NEW: State for status update loading
 
-  // --- Function to Fetch Feedback Details ---
+  const { userRole } = useAuth(); // NEW: Get userRole from context
+  const isAdmin = userRole === 'admin'; // NEW: Convenience variable
+
+  const allowedStatuses = ['Open', 'Planned', 'In Progress', 'Done']; // Matches backend schema enum
+
+  // --- Fetch Feedback Details ---
   const fetchFeedbackDetails = async () => {
     setLoading(true);
     setError(null);
@@ -25,29 +31,27 @@ const FeedbackDetailPage = () => {
     } catch (err) {
       console.error("Error fetching feedback details:", err);
       setError(err.response?.data?.message || "Failed to load feedback details. It might not exist.");
-      setFeedback(null); // Ensure feedback is null on error
+      setFeedback(null);
     } finally {
       setLoading(false);
     }
   };
 
-  // --- Function to Fetch Comments for this Feedback ---
+  // --- Fetch Comments for this Feedback ---
   const fetchComments = async () => {
     try {
       const response = await axios.get(`${API_BASE_URL}/feedbacks/${id}/comments`);
       setComments(response.data);
     } catch (err) {
       console.error("Error fetching comments:", err);
-      // For comments, we might just log the error and not block the main page rendering
-      // setCommentError("Failed to load comments."); // Optionally set a local error for comments
     }
   };
 
   // --- Handle New Comment Submission ---
   const handleAddComment = async (e) => {
-    e.preventDefault(); // Prevent default form submission
-    setCommentError(null); // Clear previous comment errors
-    setCommentLoading(true); // Indicate loading for comment submission
+    e.preventDefault();
+    setCommentError(null);
+    setCommentLoading(true);
 
     if (!newCommentContent.trim()) {
       setCommentError("Comment cannot be empty.");
@@ -59,8 +63,8 @@ const FeedbackDetailPage = () => {
       const response = await axios.post(`${API_BASE_URL}/feedbacks/${id}/comments`, {
         content: newCommentContent
       });
-      setComments(prevComments => [...prevComments, response.data]); // Add new comment to state
-      setNewCommentContent(''); // Clear the input field
+      setComments(prevComments => [...prevComments, response.data]);
+      setNewCommentContent('');
     } catch (err) {
       console.error("Error adding comment:", err);
       setCommentError(err.response?.data?.message || "Failed to add comment.");
@@ -69,17 +73,40 @@ const FeedbackDetailPage = () => {
     }
   };
 
+  // NEW: Handle Status Change (Admin only)
+  const handleStatusChange = async (e) => {
+    const newStatus = e.target.value;
+    if (!isAdmin || newStatus === feedback.status) return; // Only allow if admin and status is actually changing
+
+    setStatusUpdating(true); // Indicate loading for status update
+    try {
+      const response = await axios.patch(`${API_BASE_URL}/feedbacks/${id}/status`, { status: newStatus });
+      setFeedback(prevFeedback => ({ ...prevFeedback, status: response.data.status })); // Update local state
+      alert('Feedback status updated successfully!');
+    } catch (err) {
+      console.error('Error updating status:', err);
+      alert(err.response?.data?.message || 'Failed to update status.');
+    } finally {
+      setStatusUpdating(false);
+    }
+  };
+
+
   // --- useEffect Hook to Trigger Data Fetching ---
   useEffect(() => {
-    if (id) { // Only fetch if an ID is present in the URL
+    if (id) {
         fetchFeedbackDetails();
-        fetchComments(); // Fetch comments immediately after details (or concurrently)
+        fetchComments();
     }
-  }, [id]); // Re-run this effect if the ID in the URL changes
+  }, [id]);
 
   // --- Render Logic (Conditional Rendering for Loading/Error/No Feedback) ---
   if (loading) {
-    return <div className="text-center p-8 text-xl text-gray-700">Loading feedback details...</div>;
+    return (
+      <div className="min-h-[50vh] flex items-center justify-center text-xl text-gray-700">
+        Loading feedback details...
+      </div>
+    );
   }
 
   if (error) {
@@ -87,18 +114,14 @@ const FeedbackDetailPage = () => {
   }
 
   if (!feedback) {
-    // This case should ideally be covered by the error state if ID is invalid or not found.
-    // But acts as a fallback if feedback is null after loading.
     return <div className="text-center p-8 text-xl text-gray-700">Feedback details not available.</div>;
   }
 
   // --- Main Render for Feedback Details and Comments ---
   return (
-    <div className="h-screen w-screen bg-white p-8 rounded-lg shadow-lg">
-      {/* Back Button */}
+    <div className="max-w-3xl mx-auto bg-white p-8 rounded-lg shadow-lg">
       <Link to="/" className="text-blue-500 hover:underline mb-4 inline-block">&larr; Back to all feedbacks</Link>
 
-      {/* Feedback Details Display */}
       <h1 className="text-4xl font-bold text-gray-800 mb-4">{feedback.title}</h1>
       <p className="text-gray-700 text-lg mb-6">{feedback.description}</p>
 
@@ -111,15 +134,32 @@ const FeedbackDetailPage = () => {
         }`}>
           {feedback.category}
         </span>
-        <span className={`px-2 py-1 rounded-full text-xs font-semibold ${
+
+        {/* Status Display / Admin Status Changer */}
+        {isAdmin ? ( // NEW: Conditionally render dropdown for admin
+          <select
+            className="ml-2 px-2 py-1 rounded-full text-xs font-semibold bg-gray-200 text-gray-800 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            value={feedback.status}
+            onChange={handleStatusChange}
+            disabled={statusUpdating}
+          >
+            {allowedStatuses.map(statusOption => (
+              <option key={statusOption} value={statusOption}>
+                {statusOption} {statusUpdating && statusOption === feedback.status ? '(Updating...)' : ''}
+              </option>
+            ))}
+          </select>
+        ) : ( // Normal status display for non-admin
+          <span className={`px-2 py-1 rounded-full text-xs font-semibold ${
             feedback.status === 'Open' ? 'bg-yellow-100 text-yellow-800' :
             feedback.status === 'Planned' ? 'bg-purple-100 text-purple-800' :
             feedback.status === 'In Progress' ? 'bg-orange-100 text-orange-800' :
             feedback.status === 'Done' ? 'bg-gray-200 text-gray-800' :
             'bg-gray-100 text-gray-800'
-        }`}>
-          {feedback.status}
-        </span>
+          }`}>
+            {feedback.status}
+          </span>
+        )}
       </div>
 
       <div className="flex items-center text-gray-800 font-medium mb-8">
@@ -141,6 +181,7 @@ const FeedbackDetailPage = () => {
         )}
 
         {/* New Comment Form */}
+        {/* You might want to wrap this in isAuthenticated check as well */}
         <form onSubmit={handleAddComment} className="mb-6">
           <textarea
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:ring-2 focus:ring-blue-500 mb-3"
@@ -170,7 +211,6 @@ const FeedbackDetailPage = () => {
                 <p className="text-gray-500 text-xs">
                   Posted on {new Date(comment.createdAt).toLocaleDateString()}
                 </p>
-                {/* You could add commenter name/avatar here if auth was implemented */}
               </div>
             ))}
           </div>

@@ -71,8 +71,8 @@ const HomePage = () => {
   }
 
   return (
-    <div className="h-full w-screen p-8 text-white">
-      <h1 className="text-4xl font-bold mb-8 text-center text-[#FFE3A9]">Product Feedback Board</h1>
+    <div className="h-full w-screen p-8 bg-gradient-to-br from-blue-100 to-purple-100 text-white">
+      <h1 className="text-4xl font-bold mb-8 text-center text-[#00026a]">Product Feedback Board</h1>
 
       <div className="flex flex-col sm:flex-row justify-between items-center mb-6 space-y-4 sm:space-y-0 sm:space-x-4">
         {/* Search Bar */}
