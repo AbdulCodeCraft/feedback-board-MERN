@@ -1,4 +1,4 @@
-````markdown
+
 # Product Feedback Board
 
 A full-stack web application designed to allow users to submit product feedback or feature requests, upvote existing suggestions, and see the status of these suggestions (Open, Planned, In Progress, Done). Admins have the capability to update the status of feedback items.
@@ -211,7 +211,3 @@ Visit: [http://localhost:5173](http://localhost:5173)
   * **Response:** `200 OK`
 
 ---
-
-
-
-```
