@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 // Removed Link import as it's now in FeedbackCard and FilterSortControls
-import FeedbackCard from '../components/FeedbackCard'; // NEW: Import FeedbackCard
-import FilterSortControls from '../components/FilterSortControls'; // NEW: Import FilterSortControls
+import FeedbackCard from '../components/FeedbackCard';
+import FilterSortControls from '../components/FilterSortControls'; // Now fully self-contained
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
 
@@ -15,7 +15,7 @@ const HomePage = () => {
   const [filterCategory, setFilterCategory] = useState('');
   const [sortBy, setSortBy] = useState('createdAt');
   const [sortOrder, setSortOrder] = useState('desc');
-  const [isFilterMenuOpen, setIsFilterMenuOpen] = useState(false); // State for mobile filter menu
+  // Removed: const [isFilterMenuOpen, setIsFilterMenuOpen] = useState(false); // This state is now internal to FilterSortControls
 
   const categories = ['Feature', 'Bug', 'UI', 'Other'];
   const statuses = ['Open', 'Planned', 'In Progress', 'Done'];
@@ -59,11 +59,6 @@ const HomePage = () => {
   useEffect(() => {
     const handler = setTimeout(() => {
         fetchFeedbacks(searchQuery, filterStatus, filterCategory, sortBy, sortOrder);
-        // Optional: Close filter menu after applying filters if on mobile
-        // This was in the previous version, but might be better handled by the component itself
-        // if (isFilterMenuOpen) {
-        //   setIsFilterMenuOpen(false);
-        // }
     }, 300);
 
     return () => {
@@ -85,10 +80,12 @@ const HomePage = () => {
   }
 
   return (
-    <div className="max-w-screen-xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
+    // This div needs to be consistent with overall layout.
+    // Assuming 'w-full px-4 sm:px-6 lg:px-8 py-4' for its desktop look.
+    <div className="w-full px-4 sm:px-6 lg:px-8 py-4">
       <h1 className="text-4xl font-bold text-gray-800 mb-8 text-center">Product Feedback Board</h1>
 
-      {/* Filter and Sort Controls Component */}
+      {/* Filter and Sort Controls Component - no longer passes mobile menu state */}
       <FilterSortControls
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
@@ -102,59 +99,10 @@ const HomePage = () => {
         setSortOrder={setSortOrder}
         categories={categories}
         statuses={statuses}
-        isFilterMenuOpen={isFilterMenuOpen}
-        setIsFilterMenuOpen={setIsFilterMenuOpen}
+        // Removed: isFilterMenuOpen={isFilterMenuOpen} setIsFilterMenuOpen={setIsFilterMenuOpen}
       />
 
-      {/* Mobile Filter Menu (conditionally rendered and styled) - moved here from FilterSortControls */}
-      {isFilterMenuOpen && (
-        <div className="sm:hidden absolute top-full left-0 w-full bg-white shadow-lg py-4 z-10 border-t border-gray-200">
-          <div className="flex flex-col items-center space-y-4 px-4">
-            {/* Status Filter */}
-            <select
-              className="p-2 border text-black border-gray-300 rounded-lg shadow-sm w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-              value={filterStatus}
-              onChange={(e) => setFilterStatus(e.target.value)}
-            >
-              <option value="">All Statuses</option>
-              {statuses.map(s => <option key={s} value={s}>{s}</option>)}
-            </select>
-
-            {/* Category Filter */}
-            <select
-              className="p-2 border text-black border-gray-300 rounded-lg shadow-sm w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-              value={filterCategory}
-              onChange={(e) => setFilterCategory(e.target.value)}
-            >
-              <option value="">All Categories</option>
-              {categories.map(c => <option key={c} value={c}>{c}</option>)}
-            </select>
-
-            {/* Sort By */}
-            <select
-              className="p-2 border text-black border-gray-300 rounded-lg shadow-sm w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-              value={sortBy}
-              onChange={(e) => setSortBy(e.target.value)}
-            >
-              <option value="createdAt">Sort by Newest</option>
-              <option value="upvotes">Sort by Upvotes</option>
-            </select>
-
-            {/* Sort Order */}
-            {sortBy !== 'createdAt' && (
-                <select
-                    className="p-2 border text-black border-gray-300 rounded-lg shadow-sm w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    value={sortOrder}
-                    onChange={(e) => setSortOrder(e.target.value)}
-                >
-                    <option value="desc">Descending</option>
-                    <option value="asc">Ascending</option>
-                </select>
-            )}
-          </div>
-        </div>
-      )}
-
+      {/* REMOVED: Mobile Filter Menu conditional rendering from here */}
 
       {feedbacks.length === 0 && !loading ? (
         <div className="text-center p-8 text-gray-600 text-lg">
@@ -175,4 +123,4 @@ const HomePage = () => {
   );
 };
 
-export default HomePage;  
+export default HomePage;
