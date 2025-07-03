@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const feedbackSchema = new mongoose.Schema({
     title: {
         type: String,
-        required: true,
+        required: true, //cannot be empty
         trim: true
     },
     description: {
@@ -13,7 +13,7 @@ const feedbackSchema = new mongoose.Schema({
     },
     category: {
         type: String,
-        enum: ['Feature', 'Bug', 'UI', 'Other'],
+        enum: ['Feature', 'Bug', 'UI', 'Other'],  // enforce a strict set of acceptable string values 
         default: 'Other',
         required: true
     },

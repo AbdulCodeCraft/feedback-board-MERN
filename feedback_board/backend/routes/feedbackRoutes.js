@@ -1,5 +1,5 @@
 const express = require('express');
-const Feedback = require('../models/Feedback'); // Import the Feedback model
+const Feedback = require('../models/Feedback'); 
 
 const router = express.Router(); // Create a new router instance
 
@@ -26,7 +26,8 @@ router.post('/', async (req, res) => {
     }
 });
 
-// CORRECTED: GET /feedbacks - Get all feedbacks (with optional search, filter, and sort)
+// CORRECTED: GET /feedbacks - Get all feedbacks 
+
 router.get('/', async (req, res) => {
     try {
         // Destructure all possible query parameters
@@ -68,7 +69,7 @@ router.get('/', async (req, res) => {
             }
             // Determine sort order: 1 for ascending, -1 for descending
             const order = (sortOrder === 'asc' || sortOrder === '1') ? 1 : -1;
-            sort = { [sortBy]: order }; // Dynamically set the sort field and order
+            sort = { [sortBy]: order }; // Dynamically set the sort field and order ,JavaScript computed property name
         } else {
             // If sortBy is not provided but sortOrder is, apply it to default createdAt
             if (sortOrder) {
@@ -87,11 +88,11 @@ router.get('/', async (req, res) => {
     }
 });
 
-// 3. GET /feedbacks/:id - Get single feedback
+// 3. GET /feedbacks/:id - Get single feedback  
 router.get('/:id', async (req, res) => {
     try {
-        const { id } = req.params;
-        const feedback = await Feedback.findById(id);
+        const { id } = req.params; //his line uses object destructuring to extract the value of the id URL parameter from the req.params 
+        const feedback = await Feedback.findById(id);    //feedback is Mongoose model for the feedbacks collection
 
         if (!feedback) {
             return res.status(404).json({ message: 'Feedback not found.' });
@@ -114,25 +115,25 @@ router.patch('/:id/upvote', async (req, res) => {
 
         const updatedFeedback = await Feedback.findByIdAndUpdate(
             id,
-            { $inc: { upvotes: 1 } },
-            { new: true }
+            { $inc: { upvotes: 1 } },  //$inc A MongoDB update operator 
+            { new: true }  // It tells Mongoose to return the updated document after the modification has been applied
         );
 
-        if (!updatedFeedback) {
+        if (!updatedFeedback) { //if no document matched with given id
             return res.status(404).json({ message: 'Feedback not found.' });
         }
 
         res.status(200).json(updatedFeedback);
     } catch (error) {
         console.error('Error upvoting feedback:', error);
-        if (error.name === 'CastError') {
+        if (error.name === 'CastError') {  // provided id is not a valid 
             return res.status(400).json({ message: 'Invalid feedback ID format.' });
         }
         res.status(500).json({ message: 'Server error: Could not upvote feedback.' });
     }
 });
 
-// 5. PATCH /feedbacks/:id/status - Update status (admin only, optional)
+// 5. PATCH /feedbacks/:id/status - Update status 
 router.patch('/:id/status', async (req, res) => {
     try {
         const { id } = req.params;
@@ -141,17 +142,16 @@ router.patch('/:id/status', async (req, res) => {
         const allowedStatuses = ['Open', 'Planned', 'In Progress', 'Done'];
         if (!status || !allowedStatuses.includes(status)) {
             return res.status(400).json({ message: 'Invalid or missing status provided. Allowed statuses: ' + allowedStatuses.join(', ') });
-        }
-
+        }  
         const updatedFeedback = await Feedback.findByIdAndUpdate(
             id,
             { status: status },
-            { new: true, runValidators: true }
+            { new: true, runValidators: true } //Tells Mongoose to return the updated document after the modification, not the original one
         );
 
         if (!updatedFeedback) {
             return res.status(404).json({ message: 'Feedback not found.' });
-        }
+        }   
 
         res.status(200).json(updatedFeedback);
     } catch (error) {
@@ -163,4 +163,4 @@ router.patch('/:id/status', async (req, res) => {
     }
 });
 
-module.exports = router; // Export the router
+module.exports = router; 

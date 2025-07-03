@@ -5,7 +5,7 @@ const AlertMessage = ({ type, message }) => {
 
   const baseClasses = "px-4 py-3 rounded relative mb-4";
   let specificClasses = '';
-  let icon = ''; // Optional: add SVG icons later
+  let icon = ''; // Optional
 
   switch (type) {
     case 'success':

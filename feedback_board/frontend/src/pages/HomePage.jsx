@@ -1,9 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
-// Removed Link import as it's now in FeedbackCard and FilterSortControls
 import FeedbackCard from '../components/FeedbackCard';
-import FilterSortControls from '../components/FilterSortControls'; // Now fully self-contained
-
+import FilterSortControls from '../components/FilterSortControls';
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
 
 const HomePage = () => {
@@ -15,7 +13,7 @@ const HomePage = () => {
   const [filterCategory, setFilterCategory] = useState('');
   const [sortBy, setSortBy] = useState('createdAt');
   const [sortOrder, setSortOrder] = useState('desc');
-  // Removed: const [isFilterMenuOpen, setIsFilterMenuOpen] = useState(false); // This state is now internal to FilterSortControls
+  
 
   const categories = ['Feature', 'Bug', 'UI', 'Other'];
   const statuses = ['Open', 'Planned', 'In Progress', 'Done'];
@@ -47,7 +45,7 @@ const HomePage = () => {
       const response = await axios.patch(`${API_BASE_URL}/feedbacks/${id}/upvote`);
       setFeedbacks(prevFeedbacks =>
         prevFeedbacks.map(feedback =>
-          feedback._id === id ? { ...feedback, upvotes: response.data.upvotes } : feedback
+          feedback._id === id ? { ...feedback, upvotes: response.data.upvotes } : feedback //... spread syntax copy all existing properties
         )
       );
     } catch (err) {
@@ -80,12 +78,11 @@ const HomePage = () => {
   }
 
   return (
-    // This div needs to be consistent with overall layout.
-    // Assuming 'w-full px-4 sm:px-6 lg:px-8 py-4' for its desktop look.
+    
     <div className="w-full px-4 sm:px-6 lg:px-8 py-4">
       <h1 className="text-4xl font-bold text-gray-800 mb-8 text-center">Product Feedback Board</h1>
 
-      {/* Filter and Sort Controls Component - no longer passes mobile menu state */}
+      
       <FilterSortControls
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
@@ -99,10 +96,9 @@ const HomePage = () => {
         setSortOrder={setSortOrder}
         categories={categories}
         statuses={statuses}
-        // Removed: isFilterMenuOpen={isFilterMenuOpen} setIsFilterMenuOpen={setIsFilterMenuOpen}
       />
 
-      {/* REMOVED: Mobile Filter Menu conditional rendering from here */}
+    
 
       {feedbacks.length === 0 && !loading ? (
         <div className="text-center p-8 text-gray-600 text-lg">

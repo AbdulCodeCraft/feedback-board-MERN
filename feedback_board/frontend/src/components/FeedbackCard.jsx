@@ -36,7 +36,7 @@ const FeedbackCard = ({ feedback, onUpvote }) => {
         </div>
         <button
           className="bg-gray-900 hover:bg-gray-600 text-white font-semibold py-1 px-3 rounded-full text-sm transition duration-300 shadow-sm"
-          onClick={() => onUpvote(feedback._id)} // Use onUpvote prop
+          onClick={() => onUpvote(feedback._id)}
         >
           Upvote
         </button>

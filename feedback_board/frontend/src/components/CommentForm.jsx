@@ -1,5 +1,5 @@
 import React from 'react';
-import AlertMessage from './AlertMessage'; // Import AlertMessage
+import AlertMessage from './AlertMessage'; 
 
 const CommentForm = ({ newCommentContent, setNewCommentContent, handleAddComment, commentLoading, commentError }) => {
   return (
@@ -19,7 +19,7 @@ const CommentForm = ({ newCommentContent, setNewCommentContent, handleAddComment
       >
         {commentLoading ? 'Posting...' : 'Post Comment'}
       </button>
-      <AlertMessage type="error" message={commentError} /> {/* Display comment error */}
+      <AlertMessage type="error" message={commentError} /> 
     </form>
   );
 };

@@ -1,16 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-// You were importing useAuth, but you need to import AuthProvider here for JSX
-import { AuthProvider } from './context/AuthContext.jsx'; // CORRECTED: Import AuthProvider (named export)
+import { AuthProvider } from './context/AuthContext.jsx'; 
 import App from './App.jsx';
-import './index.css'; // Your main CSS file with Tailwind directives
-import { BrowserRouter } from 'react-router-dom'; // NEW: Import BrowserRouter
+import './index.css'; // 
+import { BrowserRouter } from 'react-router-dom'; 
 
-ReactDOM.createRoot(document.getElementById('root')).render(
+ReactDOM.createRoot(document.getElementById('root')).render(  //this find index.html tag with id=root this is the main mount where your react app injected
   <React.StrictMode>
-    {/* NEW: Wrap the App component with BrowserRouter */}
     <BrowserRouter>
-      <AuthProvider> {/* Ensure App is wrapped with AuthProvider */}
+      <AuthProvider> 
         <App />
       </AuthProvider>
     </BrowserRouter>

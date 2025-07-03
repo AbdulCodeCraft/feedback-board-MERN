@@ -6,7 +6,9 @@ const MOCK_USER = { username: 'user', password: 'userpassword', role: 'user' };
 
 const AuthContext = createContext(null);
 
-export const AuthProvider = ({ children }) => {
+{/* <App /> component) will be rendered as children. */}
+
+export const AuthProvider = ({ children }) => {  
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userRole, setUserRole] = useState(null); // 'user', 'admin', or null
 
@@ -20,7 +22,7 @@ export const AuthProvider = ({ children }) => {
       setUserRole(storedRole);
     }
   }, []);
-
+  
   const login = (username, password) => {
     if (username === MOCK_ADMIN.username && password === MOCK_ADMIN.password) {
       setIsAuthenticated(true);

@@ -1,10 +1,9 @@
-import React, { useState } from 'react'; // useState is needed for mobile menu state
+import React, { useState } from 'react'; 
 import { Link } from 'react-router-dom';
 
 const Navbar = ({ isAuthenticated, userRole, logout }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  // Define common button/link classes for uniformity
   const navLinkClasses =
     "px-4 py-2 rounded-md text-white hover:bg-blue-400 transition-colors duration-200 font-semibold text-sm";
   const loginLogoutBtnClasses =
@@ -18,7 +17,7 @@ const Navbar = ({ isAuthenticated, userRole, logout }) => {
   };
 
   return (
-    <> {/* Use a Fragment to return multiple elements */}
+    <> 
       <nav className="bg-blue-300 shadow-md h-16 px-6 flex justify-between items-center relative z-10">
         {/* Left Section: PFB Text */}
         <div className="!text-gray-900 font-extrabold text-lg sm:text-xl">PFB</div>
@@ -101,3 +100,4 @@ const Navbar = ({ isAuthenticated, userRole, logout }) => {
 };
 
 export default Navbar;
+

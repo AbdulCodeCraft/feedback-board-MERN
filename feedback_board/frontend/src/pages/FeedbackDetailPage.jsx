@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams, Link } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext'; // NEW: Import useAuth hook
+import { useAuth } from '../context/AuthContext'; 
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
 
@@ -14,14 +14,14 @@ const FeedbackDetailPage = () => {
   const [error, setError] = useState(null);
   const [commentError, setCommentError] = useState(null);
   const [commentLoading, setCommentLoading] = useState(false);
-  const [statusUpdating, setStatusUpdating] = useState(false); // NEW: State for status update loading
+  const [statusUpdating, setStatusUpdating] = useState(false); 
 
-  const { userRole } = useAuth(); // NEW: Get userRole from context
-  const isAdmin = userRole === 'admin'; // NEW: Convenience variable
+  const { userRole } = useAuth();
+  const isAdmin = userRole === 'admin'; 
 
   const allowedStatuses = ['Open', 'Planned', 'In Progress', 'Done']; // Matches backend schema enum
 
-  // --- Fetch Feedback Details ---
+  //Fetch Feedback Details
   const fetchFeedbackDetails = async () => {
     setLoading(true);
     setError(null);
@@ -37,7 +37,7 @@ const FeedbackDetailPage = () => {
     }
   };
 
-  // --- Fetch Comments for this Feedback ---
+  // Fetch Comments for this Feedback
   const fetchComments = async () => {
     try {
       const response = await axios.get(`${API_BASE_URL}/feedbacks/${id}/comments`);
@@ -47,7 +47,7 @@ const FeedbackDetailPage = () => {
     }
   };
 
-  // --- Handle New Comment Submission ---
+  // Handle New Comment Submission
   const handleAddComment = async (e) => {
     e.preventDefault();
     setCommentError(null);
@@ -92,7 +92,7 @@ const FeedbackDetailPage = () => {
   };
 
 
-  // --- useEffect Hook to Trigger Data Fetching ---
+  // useEffect Hook to Trigger Data Fetching 
   useEffect(() => {
     if (id) {
         fetchFeedbackDetails();
@@ -100,7 +100,7 @@ const FeedbackDetailPage = () => {
     }
   }, [id]);
 
-  // --- Render Logic (Conditional Rendering for Loading/Error/No Feedback) ---
+  
   if (loading) {
     return (
       <div className="min-h-[50vh] flex items-center justify-center text-xl text-gray-700">
@@ -117,7 +117,7 @@ const FeedbackDetailPage = () => {
     return <div className="text-center p-8 text-xl text-gray-700">Feedback details not available.</div>;
   }
 
-  // --- Main Render for Feedback Details and Comments ---
+  //Main Render for Feedback Details and Comments
   return (
     <div className="w-screen h-screen bg-white p-8 rounded-lg shadow-lg">
       <Link to="/" className="text-blue-500 hover:underline mb-4 inline-block">&larr; Back to all feedbacks</Link>
@@ -132,11 +132,11 @@ const FeedbackDetailPage = () => {
             feedback.category === 'UI' ? 'bg-blue-100 text-blue-800' :
             'bg-gray-100 text-gray-800'
         }`}>
-          {feedback.category}``
+          {feedback.category}
         </span>
 
         {/* Status Display / Admin Status Changer */}
-        {isAdmin ? ( // NEW: Conditionally render dropdown for admin
+        {isAdmin ? ( // Conditionally render dropdown for admin
           <select
             className="ml-2 px-2 py-1 rounded-full text-xs font-semibold bg-gray-200 text-gray-800 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
             value={feedback.status}

@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const commentSchema = new mongoose.Schema({
     feedback: {
-        type: mongoose.Schema.Types.ObjectId, // Link to the Feedback item
+        type: mongoose.Schema.Types.ObjectId, // Link to the Feedback item  stores mongoDb object id    
         ref: 'Feedback', // Refers to the 'Feedback' model
         required: true
     },
@@ -11,11 +11,6 @@ const commentSchema = new mongoose.Schema({
         required: true,
         trim: true
     },
-    // You could add 'author' here if you implement basic auth
-    // author: {
-    //     type: mongoose.Schema.Types.ObjectId,
-    //     ref: 'User' // Assuming a 'User' model for basic auth
-    // },
     createdAt: {
         type: Date,
         default: Date.now

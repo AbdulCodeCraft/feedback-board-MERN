@@ -7,23 +7,23 @@ const router = express.Router();
 // POST /feedbacks/:feedbackId/comments - Add a new comment to a specific feedback
 router.post('/:feedbackId/comments', async (req, res) => {
     const { feedbackId } = req.params;
-    const { content } = req.body; // Assuming 'content' is sent in the request body
+    const { content } = req.body; 
 
     if (!content) {
         return res.status(400).json({ message: 'Comment content is required.' });
     }
 
     try {
-        // Optional: Verify if the feedback item actually exists
+        
         const feedbackExists = await Feedback.findById(feedbackId);
         if (!feedbackExists) {
             return res.status(404).json({ message: 'Feedback not found.' });
         }
 
-        const newComment = new Comment({
+        const newComment = new Comment({  //create new instance linking feedback and content
             feedback: feedbackId,
             content
-            // If you have 'author', add: author: req.user.id (after basic auth setup)
+            
         });
 
         await newComment.save();
@@ -42,7 +42,7 @@ router.get('/:feedbackId/comments', async (req, res) => {
     const { feedbackId } = req.params;
 
     try {
-        // Optional: Verify if the feedback item actually exists
+        
         const feedbackExists = await Feedback.findById(feedbackId);
         if (!feedbackExists) {
             return res.status(404).json({ message: 'Feedback not found.' });

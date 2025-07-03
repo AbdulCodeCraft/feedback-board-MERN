@@ -1,4 +1,4 @@
-import React, { useState } from 'react'; // NEW: Import useState
+import React, { useState } from 'react'; 
 import { Link } from 'react-router-dom';
 
 const FilterSortControls = ({
@@ -14,14 +14,12 @@ const FilterSortControls = ({
   setSortOrder,
   categories,
   statuses,
-  // Removed: isFilterMenuOpen, setIsFilterMenuOpen from props, as they will be internal
+  
 }) => {
-  // NEW: Internal state for mobile filter menu
+  
   const [isFilterMenuOpen, setIsFilterMenuOpen] = useState(false);
 
   return (
-    // This div is the RELATIVE parent for the ABSOLUTE mobile menu.
-    // It spans the full width of its parent in HomePage, and handles stacking context correctly.
     <div className="flex flex-col sm:flex-row justify-between items-center mb-6 space-y-4 sm:space-y-0 sm:space-x-4 relative w-full"> {/* Added w-full */}
 
       {/* Search Bar */}
@@ -96,14 +94,14 @@ const FilterSortControls = ({
           )}
       </div>
 
-      {/* Submit New Feedback Button - remains here as part of controls */}
+      
       <Link to="/submit" className="bg-gray-800 hover:bg-gray-600 text-white font-medium py-2 px-4 rounded-lg shadow-md transition duration-300 ml-0 sm:ml-4 mt-4 sm:mt-0 w-full sm:w-auto text-center">
         Submit New Feedback
       </Link>
 
-      {/* Mobile Filter Menu (conditionally rendered and styled) - MOVED HERE */}
+      {/* Mobile Filter Menu  */}
       {isFilterMenuOpen && (
-        // Increased z-index to z-30 (or higher) and adjusted top positioning
+        
         <div className="sm:hidden absolute top-full left-0 w-full bg-white shadow-lg py-4 z-30 border-t border-gray-200">
           <div className="flex flex-col items-center space-y-4 px-4">
             {/* Status Filter */}

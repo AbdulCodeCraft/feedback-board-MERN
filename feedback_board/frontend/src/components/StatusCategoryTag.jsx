@@ -1,6 +1,6 @@
 import React from 'react';
 
-const StatusCategoryTag = ({ type, value }) => { // type: 'category' or 'status', value: actual string
+const StatusCategoryTag = ({ type, value }) => { 
   let colorClasses = '';
 
   if (type === 'category') {

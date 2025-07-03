@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-
-// Import the SVG image
-import FeedbackIllustration from '../assets/feedback_illustration.svg'; // Correct path to your SVG
+import FeedbackIllustration from '../assets/feedback_illustration.svg'; 
 import feedbackVector from '../assets/feedback_vector.svg';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
@@ -55,15 +53,15 @@ const SubmitFeedbackPage = () => {
   };
 
   return (
-    // Outer container for the entire page, takes full screen height, uses flex for layout
+    
     <div className=" bg-gradient-to-br from-blue-100 to-purple-100 flex items-center justify-center pt-8">
       <div className="flex flex-col lg:flex-row bg-white rounded-xl shadow-2xl overflow-hidden max-w-4xl w-full">
 
-        {/* Left Section: Image / Illustration */}
+        {/* Left Section: Image */}
         <div className="lg:w-1/2 p-8 flex items-center justify-center bg-blue-50">
           <img
-            src={feedbackVector} // Use the imported SVG variable here
-            alt="Description of your image" // Always add descriptive alt text for accessibility
+            src={feedbackVector} // 
+            alt="feedback illustration"
             className="max-w-xs md:max-w-sm lg:max-w-full h-auto"
           />
         </div>

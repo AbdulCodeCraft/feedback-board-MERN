@@ -4,14 +4,14 @@ import SubmitFeedbackPage from "./pages/SubmitFeedbackPage";
 import FeedbackDetailPage from "./pages/FeedbackDetailPage";
 import LoginPage from "./pages/LoginPage";
 import { useAuth } from "./context/AuthContext";
-import Navbar from "./layouts/Navbar"; // NEW: Import the Navbar component
+import Navbar from "./layouts/Navbar"; 
 
 function App() {
-  const { isAuthenticated, userRole, logout } = useAuth();
+  const { isAuthenticated, userRole, logout } = useAuth();  //useAuth hook to destructure and retrieve the current authentication status 
 
   return (
-    <div className="min-h-screen bg-gray-100 font-sans overflow-x-hidden"> {/* Added overflow-x-hidden */}
-      {/* Basic Navigation (Header) - Now a separate component */}
+    <div className="min-h-screen bg-gray-100 font-sans overflow-x-hidden"> 
+      
       {isAuthenticated && ( // Navbar only renders if authenticated
         <Navbar
           isAuthenticated={isAuthenticated}

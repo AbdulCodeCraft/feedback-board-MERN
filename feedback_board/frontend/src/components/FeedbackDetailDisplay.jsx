@@ -2,12 +2,10 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-
-// NEW: Import the new components
 import FeedbackDetailDisplay from '../components/FeedbackDetailDisplay';
 import CommentForm from '../components/CommentForm';
 import CommentList from '../components/CommentList';
-import AlertMessage from '../components/AlertMessage'; // For general page errors
+import AlertMessage from '../components/AlertMessage'; 
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
 
@@ -27,7 +25,7 @@ const FeedbackDetailPage = () => {
 
   const allowedStatuses = ['Open', 'Planned', 'In Progress', 'Done'];
 
-  // --- Fetch Feedback Details ---
+  //Fetch Feedback Details
   const fetchFeedbackDetails = async () => {
     setLoading(true);
     setError(null);
@@ -43,18 +41,18 @@ const FeedbackDetailPage = () => {
     }
   };
 
-  // --- Fetch Comments for this Feedback ---
+  // Fetch Comments for this Feedback 
   const fetchComments = async () => {
     try {
       const response = await axios.get(`${API_BASE_URL}/feedbacks/${id}/comments`);
       setComments(response.data);
     } catch (err) {
       console.error("Error fetching comments:", err);
-      // setCommentError("Failed to load comments."); // Decide if you want to display this prominently
+      // setCommentError("Failed to load comments."); 
     }
   };
 
-  // --- Handle New Comment Submission ---
+  // Handle New Comment Submission 
   const handleAddComment = async (e) => {
     e.preventDefault();
     setCommentError(null);
@@ -80,7 +78,7 @@ const FeedbackDetailPage = () => {
     }
   };
 
-  // --- Handle Status Change (Admin only) ---
+  // Handle Status Change (Admin only)
   const handleStatusChange = async (e) => {
     const newStatus = e.target.value;
     if (!isAdmin || newStatus === feedback.status) return;
@@ -98,7 +96,7 @@ const FeedbackDetailPage = () => {
     }
   };
 
-  // --- useEffect Hook to Trigger Data Fetching ---
+  // useEffect Hook to Trigger Data Fetching
   useEffect(() => {
     if (id) {
         fetchFeedbackDetails();
@@ -106,7 +104,7 @@ const FeedbackDetailPage = () => {
     }
   }, [id]);
 
-  // --- Render Logic (Conditional Rendering for Loading/Error/No Feedback) ---
+  // Render Logic (Conditional Rendering for Loading/Error/No Feedback) 
   if (loading) {
     return (
       <div className="min-h-[50vh] flex items-center justify-center text-xl text-gray-700">
@@ -116,7 +114,7 @@ const FeedbackDetailPage = () => {
   }
 
   if (error) {
-    return <AlertMessage type="error" message={error} />; // Use AlertMessage for page error
+    return <AlertMessage type="error" message={error} />; 
   }
 
   if (!feedback) {
@@ -124,10 +122,10 @@ const FeedbackDetailPage = () => {
   }
 
   return (
-    <div className="max-w-3xl mx-auto bg-white p-8 rounded-lg shadow-lg"> {/* Adjusted outer div as per App.jsx layout */}
+    <div className="max-w-3xl mx-auto bg-white p-8 rounded-lg shadow-lg"> 
       <Link to="/" className="text-blue-500 hover:underline mb-4 inline-block">&larr; Back to all feedbacks</Link>
 
-      {/* NEW: FeedbackDetailDisplay Component */}
+      
       <FeedbackDetailDisplay
         feedback={feedback}
         isAdmin={isAdmin}
@@ -140,7 +138,7 @@ const FeedbackDetailPage = () => {
       <div className="mt-8 border-t border-gray-200 pt-8">
         <h2 className="text-2xl font-bold text-gray-800 mb-4">Comments ({comments.length})</h2>
 
-        {/* NEW: CommentForm Component */}
+       \
         <CommentForm
           newCommentContent={newCommentContent}
           setNewCommentContent={setNewCommentContent}
@@ -149,7 +147,7 @@ const FeedbackDetailPage = () => {
           commentError={commentError}
         />
 
-        {/* NEW: CommentList Component */}
+        
         <CommentList comments={comments} />
       </div>
     </div>
