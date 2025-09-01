@@ -48,7 +48,7 @@ const FeedbackDetailPage = () => {
       setComments(response.data);
     } catch (err) {
       console.error("Error fetching comments:", err);
-      // setCommentError("Failed to load comments."); 
+      
     }
   };
 

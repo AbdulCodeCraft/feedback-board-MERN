@@ -14,7 +14,7 @@ const FeedbackDetailPage = () => {
   const [error, setError] = useState(null);
   const [commentError, setCommentError] = useState(null);
   const [commentLoading, setCommentLoading] = useState(false);
-  const [statusUpdating, setStatusUpdating] = useState(false); 
+  const [statusUpdating, setStatusUpdating] = useState(false);  
 
   const { userRole } = useAuth();
   const isAdmin = userRole === 'admin'; 
@@ -73,7 +73,7 @@ const FeedbackDetailPage = () => {
     }
   };
 
-  // NEW: Handle Status Change (Admin only)
+  // Handle Status Change (Admin only)
   const handleStatusChange = async (e) => {
     const newStatus = e.target.value;
     if (!isAdmin || newStatus === feedback.status) return; // Only allow if admin and status is actually changing
